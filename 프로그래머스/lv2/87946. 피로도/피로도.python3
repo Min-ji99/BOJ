@@ -1,0 +1,16 @@
+answer=0
+visit=[]
+def dfs(k, count, dungeons) :
+    global answer
+    if count>answer : answer=count
+    for i in range(len(dungeons)) :
+        if k>=dungeons[i][0] and visit[i]==0 :
+            visit[i]=1
+            dfs(k-dungeons[i][1], count+1, dungeons)
+            visit[i]=0
+            
+def solution(k, dungeons):
+    global answer, visit
+    visit=[0]*len(dungeons)
+    dfs(k, 0, dungeons)
+    return answer
