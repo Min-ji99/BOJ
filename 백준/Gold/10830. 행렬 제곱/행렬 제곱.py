@@ -1,38 +1,35 @@
-def matrixMul(num):
-    global N, arr
-    if num == 1:
-        for i in range(N):
-            for j in range(N):
-                arr[i][j] %= 1000
-        return arr
-    elif num % 2 == 1:
-        tmp = [[0] * N for _ in range(N)]
-        C = matrixMul(num - 1)
-        for i in range(N):
-            for j in range(N):
-                for k in range(N):
-                    tmp[i][j] += C[i][k] * arr[k][j]
-                tmp[i][j] %= 1000
-        return tmp
+import sys
+input = sys.stdin.readline
+
+N, B = map(int, input().split())
+A = [[*map(int, input().split())] for _ in range(N)]
+
+def mul(U, V):
+    n = len(U)
+    Z = [[0]*n for _ in range(n)]
+    
+    for row in range(n):
+        for col in range(n):
+            e = 0
+            for i in range(n):
+                e += U[row][i] * V[i][col]
+            Z[row][col] = e % 1000
+
+    return Z
+
+def square(A, B):
+    if B == 1:
+        for x in range(len(A)):
+            for y in range(len(A)):
+                A[x][y] %= 1000
+        return A
+    
+    tmp = square(A, B//2)
+    if B % 2:
+        return mul(mul(tmp, tmp), A)
     else:
-        tmp = [[0] * N for _ in range(N)]
-        C = matrixMul(num // 2)
-        for i in range(N):
-            for j in range(N):
-                for k in range(N):
-                    tmp[i][j] += C[i][k] * C[k][j]
-                tmp[i][j] %= 1000
-        return tmp
+        return mul(tmp, tmp)
 
-
-N, A = map(int, input().split())
-arr = []
-for i in range(N):
-    arr.append(list(map(int, input().split())))
-res = matrixMul(A)
-
-# 출력
-for i in range(N):
-    for j in range(N):
-        print(res[i][j], end=" ")
-    print()
+result = square(A, B)
+for r in result:
+    print(*r)
