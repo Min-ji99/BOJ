@@ -1,20 +1,17 @@
 class Solution {
-    public boolean isPrime(int n){
-        if(n==2) return true;
-        for(int i=2; i<Math.sqrt(n)+1; i++){
-            if(n%i==0) return false;
+    public int solution(int num){
+        boolean prime[]=new boolean[num+1];
+        prime[0]=prime[1]=true;
+        for(int i=2; i*i<=num; i++){
+            if(!prime[i]){
+            	// prime[j] 소수가 아닌 표시
+            	for(int j=i*i; j<=num; j+=i) prime[j] = true;                
+            }  
         }
-        return true;
-
-    }
-    public int solution(int n) {
-        int answer = 0;
-        Solution findPrime=new Solution();
-        for(int i=2; i<=n; i++){
-            if(isPrime(i)) {
-                answer+=1;
-            }
+        int count=0;
+        for(int i=2; i<=num; i++){
+            if(!prime[i]) count+=1;
         }
-        return answer;
+        return count;
     }
 }
