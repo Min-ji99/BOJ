@@ -1,18 +1,14 @@
 def solution(n, times):
-    answer = 0
-    
-    left=1
-    right=max(times)*n
-    while left<right :
-        mid=(left+right)//2
-        total =0
+    start=1
+    end=max(times)*n
+    while start<end:
+        mid=(start+end)//2
+        total=0
         for time in times :
             total+=mid//time
-            
-        if total >=n :
-            right=mid
+        if total>=n :
+            end=mid
         else:
-            left=mid+1
-    answer=left
+            start=mid+1
         
-    return answer
+    return start
