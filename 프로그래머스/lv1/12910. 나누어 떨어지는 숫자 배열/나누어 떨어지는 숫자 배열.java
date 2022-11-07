@@ -1,22 +1,21 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-class Solution {
+import java.util.PriorityQueue;
+
+public class Solution {
     public int[] solution(int[] arr, int divisor) {
-        int[] answer = {};
-        ArrayList<Integer> result = new ArrayList<>();
-        for (int num : arr) {
-            if (num % divisor == 0) {
-                result.add(num);
-            }
+
+        PriorityQueue<Integer> list = new PriorityQueue<>();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % divisor == 0) list.add(arr[i]);
         }
-        if (result.isEmpty()) {
-            result.add(-1);
+
+        if (list.size() == 0) return new int[]{-1};
+
+        // list를 Array로 바꾸고
+        int[] answer = new int[list.size()];
+        int idx = 0;
+        while (!list.isEmpty()) {
+            answer[idx++] = list.poll();
         }
-        answer = new int[result.size()];
-        for (int i = 0; i < result.size(); i++) {
-            answer[i] = result.get(i);
-        }
-        Arrays.sort(answer);
         return answer;
     }
 }
