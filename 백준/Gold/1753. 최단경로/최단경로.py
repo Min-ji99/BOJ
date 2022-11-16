@@ -1,31 +1,32 @@
-import heapq
 import sys
+import heapq
+
+input=sys.stdin.readline
 
 INF=sys.maxsize
-V, E=map(int, sys.stdin.readline().split())
-K=int(sys.stdin.readline())
-graph=[[] for _ in range(V+1)]
-d=[INF]*(V+1)
-queue=[]
-for i in range(E) :
-    u, v, w = map(int, sys.stdin.readline().split())
-    graph[u].append([v, w])
+v, e=map(int, input().split())
+k=int(input())
+graph=[[] for _ in range(v+1)]
+distance=[INF]*(v+1)
+q=[]
+for _ in range(e) :
+    a, b, c=map(int, input().split())
+    graph[a].append([b, c])
 
-def Dijkstra(start):
-    d[start]=0 #시작 정점에 해당하는 가중치는 0
-    heapq.heappush(queue, [0, start]) #거리-노드 순으로 해야 정렬했을 때 가중치 순으로 됨
+def dijkstra(start):
+    distance[start]=0
+    now=heapq.heappush(q, [0, start])
 
-    while queue:
-        min , node=heapq.heappop(queue)
+    while q:
+        min, node=heapq.heappop(q)
+        for next_node, cost in graph[node]:
+            if distance[next_node]>min+cost:
+                distance[next_node]=min+cost
+                heapq.heappush(q, [min+cost, next_node])
+dijkstra(k)
 
-        for next_node, wei in graph[node] :
-            next_wei=wei+min
-
-            if next_wei < d[next_node] :
-                d[next_node]=next_wei
-                heapq.heappush(queue, [next_wei, next_node])
-
-
-Dijkstra(K)
-for i in d[1:] :
-    print(i if i!=INF else "INF")
+for d in distance[1:]:
+    if d==INF :
+        print("INF")
+    else:
+        print(d)
