@@ -1,20 +1,20 @@
 import math
 
 def solution(progresses, speeds):
-    times=[]
     answer=[]
-    for i in range(len(progresses)) :
-        times.append(math.ceil((100-progresses[i])/speeds[i]))
-        
-    before=times[0]
-    count=1
-    for i in range(1, len(times)):
-        if before>=times[i] :
-            count+=1
+    time=[]
+    for i in range(len(speeds)) :
+        time.append(math.ceil((100-progresses[i])/speeds[i]))
+
+    now=time[0]
+    cnt=1
+    for i in range(1, len(time)) :
+        if now>=time[i] :
+            cnt+=1
         else:
-            before=times[i]
-            answer.append(count)
-            count=1
-    if count>0:
-        answer.append(count)
+            answer.append(cnt)
+            now=time[i]
+            cnt=1
+    if cnt!=0 :
+        answer.append(cnt)
     return answer
