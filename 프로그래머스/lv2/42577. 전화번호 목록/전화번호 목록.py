@@ -1,12 +1,11 @@
 def solution(phone_book):
-    answer = True
+    answer=True
     phone_book.sort()
-    
+
     start=phone_book[0]
-    for i in range(1, len(phone_book)) :
-        if phone_book[i].startswith(start):
-            return False
+    for phone in phone_book[1:] :
+        if phone.startswith(start) :
+            answer=False
         else:
-            start=phone_book[i]
-    
+            start=phone
     return answer
