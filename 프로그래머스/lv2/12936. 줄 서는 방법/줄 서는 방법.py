@@ -1,16 +1,16 @@
-import math
+from math import factorial
 
 def solution(n, k):
-    answer = [i for i in range(1, n+1)]
+    nums=[i for i in range(1, n+1)]
     stack=[]
-    k=k-1
-    
-    while answer:
-        a=k//math.factorial(n-1)
-        stack.append(answer[a])
-        del answer[a]
-        
-        k=k%math.factorial(n-1)
+
+    while n!=0:
+        num=k//factorial(n-1)
+        k=k%factorial(n-1)
+        if k==0 :
+            stack.append(nums.pop(num-1))
+        else:
+            stack.append(nums.pop(num))
         n-=1
-    
+
     return stack
