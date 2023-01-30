@@ -1,3 +1,8 @@
+'''
+1. 순열 이용
+-> 효율성 문제
+2. factorial 이용
+'''
 from math import factorial
 
 def solution(n, k):
