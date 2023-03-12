@@ -1,12 +1,7 @@
 def solution(n, words):
-    answer=[0, 0]
-    
-    for i in range(1, len(words)) :
-        if words[i] in words[:i] :
-            answer=[i%n+1, i//n+1]
-            break
-        if words[i][0] != words[i-1][-1] :
-            answer=[i%n+1, i//n+1]
-            break
+    pos=-1
+    for idx in range(1, len(words)):
+        if words[idx-1][-1]!=words[idx][0] or words[:idx].count(words[idx]):
+            return [idx%n+1, idx//n+1]
             
-    return answer
+    return [0, 0]
