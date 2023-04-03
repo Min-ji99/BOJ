@@ -1,37 +1,41 @@
+#75%에서
 import sys
 import heapq
 
 input=sys.stdin.readline
-INF=sys.maxsize
-n, e=map(int, input().split())
-graph=[[] for _ in range(n+1)]
 
+n, e=map(int, input().split())
+
+graphs=[[] for _ in range(n+1)]
 for _ in range(e) :
     a, b, c=map(int, input().split())
-    graph[a].append([b, c])
-    graph[b].append([a, c])
+    graphs[a].append([b, c])
+    graphs[b].append([a, c])
 
 v1, v2=map(int, input().split())
 
 def dijkstra(start) :
-    d=[INF]*(n+1)
-    q=[]
-    d[start]=0
-    heapq.heappush(q, [0, start])
-    while q:
-        wei, now=heapq.heappop(q)
-        for next_node, cost in graph[now]:
-            if d[next_node]>wei+cost:
-                d[next_node]=wei+cost
-                heapq.heappush(q, [wei+cost, next_node])
-    return d
+    heap=[]
+    heapq.heappush(heap, [0, start])
+    visit=[float('inf')]*(n+1)
+    visit[start]=0
 
-start=dijkstra(1)
-v1_dijkstra=dijkstra(v1)
-v2_dijksta=dijkstra(v2)
-answer=min(start[v1]+v1_dijkstra[v2]+v2_dijksta[n], start[v2]+v2_dijksta[v1]+v1_dijkstra[n])
+    while heap:
+        cost, now=heapq.heappop(heap)
+        for next, weight in graphs[now] :
+            if visit[next]>cost+weight :
+                visit[next]=cost+weight
+                heapq.heappush(heap, [cost+weight, next])
 
-if answer<INF :
-    print(answer)
-else:
+    return visit
+
+one=dijkstra(1)
+v1_distance=dijkstra(v1)
+v2_distance=dijkstra(v2)
+
+answer=min(one[v1]+v1_distance[v2]+v2_distance[n], one[v2]+v2_distance[v1]+v1_distance[n])
+
+if answer==float('inf') :
     print(-1)
+else:
+    print(answer)
