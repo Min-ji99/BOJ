@@ -1,22 +1,27 @@
-def solution(book_time):
+import heapq
 
-    # 풀이설명1 : 함수 만들기
-    def change_min(str_time: str) -> int:
-        return int(str_time[0:2]) * 60 + int(str_time[3:])
-	
-    #풀이 설명2 : 예약 시간이 빠른 순으로 정렬하기
-    book_times = sorted([[change_min(i[0]), change_min(i[1]) + 10] for i in book_time])
-	
-    #풀이 설명3 : 방 배정하기
-    rooms = []
-    for book_time in book_times:
-        if not rooms:
-            rooms.append(book_time)
+def solution(book_time):
+    answer = 0
+    
+    times=[]
+    heap=[]
+    for time in book_time :
+        start=int(time[0][:2])*60+int(time[0][3:])
+        end=int(time[1][:2])*60+int(time[1][3:])+10
+        times.append([start, end])
+        
+    times.sort()
+    
+    for time in times :
+        if len(heap)==0 :
+            answer+=1
+            heapq.heappush(heap, time[1])
             continue
-        for index, room in enumerate(rooms):
-            if book_time[0] >= room[-1]:
-                rooms[index] = room + book_time
-                break
+        
+        if heap[0]<=time[0] :
+            heapq.heappop(heap)
+            heapq.heappush(heap, time[1])
         else:
-            rooms.append(book_time)
-    return len(rooms)
+            heapq.heappush(heap, time[1])
+            
+    return len(heap)
