@@ -1,15 +1,17 @@
+from collections import defaultdict
+
 def solution(k, tangerine):
     answer = 0
-    tangerine.sort()
-    sizes={}
-    for size in tangerine :
-        sizes[size]=sizes.get(size, 0)+1
-    #개수가 많은 순으로 정렬
-    sizes=sorted(sizes.values(), key=lambda x:-x)
+    kinds=defaultdict(int)
+    for t in tangerine :
+        kinds[t]+=1
+        
+    kinds=sorted(kinds.items(), key=lambda x:-x[1])
+    
+    for key, value in kinds :
+        k-=value
+        answer+=1
+        if k<=0 :
+            break
 
-    count=0
-    for i in range(len(sizes)):
-        count += sizes[i]
-        if count>=k :
-            return i+1
-    return len(sizes)
+    return answer
