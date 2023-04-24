@@ -1,23 +1,24 @@
-'''
-동일한 가짓수의 토핑
-'''
-from collections import Counter
+from collections import defaultdict
 
 def solution(topping):
     answer = 0
-    A_dict={}
-    B_dict=Counter(topping)
+    left=defaultdict(int)
+    right=defaultdict(int)
     
-    if len(topping)==1 : return answer
-            
+    for i in range(len(topping)):
+        right[topping[i]]+=1
+    
     for i in range(len(topping)) :
-        if B_dict[topping[i]]>1 :
-            B_dict[topping[i]]-=1
-        elif B_dict[topping[i]]==1 :
-            del B_dict[topping[i]]
-        A_dict[topping[i]]=A_dict.get(topping[i], 0)+1
-        if len(B_dict)==len(A_dict) :
-            answer+=1
+        if topping[i] not in left :
+            left[topping[i]]=1
+        else:
+            left[topping[i]]+=1
+        if right[topping[i]]==1:
+            del right[topping[i]]
+        else:
+            right[topping[i]]-=1
         
+        if len(left)==len(right) :
+            answer+=1
         
     return answer
