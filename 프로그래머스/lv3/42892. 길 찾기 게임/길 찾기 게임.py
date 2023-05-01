@@ -1,9 +1,9 @@
 '''
-전위순회는 루-왼-오
-후위순회는 왼-오-루
-
+전위순회 루-왼-오
+후위순회 왼-오-루
 '''
 import sys
+
 sys.setrecursionlimit(10000)
 
 class Node(object) :
@@ -13,42 +13,45 @@ class Node(object) :
         self.left=None
         self.right=None
 
-def solution(nodeinfo):
-    for i in range(len(nodeinfo)) : #노드번호 저장
-        nodeinfo[i].append(i+1)
-
-    nodeinfo.sort(key=lambda x:(-x[1], x[0]))
-
-    tree=Node(nodeinfo[0])
-    for info in nodeinfo[1:]:
-        set_node(tree, info)
-
-    return [preorder(tree), postorder(tree)]
-
-def set_node(root, info) :
-    if root.pos[0]>info[0] :
-        if root.left:
-            set_node(root.left, info)
+def set_node(tree, info) :
+    if tree.pos[0]>info[0] :
+        if tree.left :
+            set_node(tree.left, info)
         else:
-            root.left=Node(info)
+            tree.left=Node(info)
     else:
-        if root.right:
-            set_node(root.right, info)
+        if tree.right:
+            set_node(tree.right, info)
         else:
-            root.right=Node(info)
+            tree.right=Node(info)
 
-def postorder(tree):
-    path=[]
-    if tree.left:
-        path+=postorder(tree.left)
-    if tree.right:
-        path+=postorder(tree.right)
-    path.append(tree.num)
-    return path
-def preorder(tree) :
+def pre_order(tree) :
     path=[tree.num]
     if tree.left:
-        path+=preorder(tree.left)
+        path+=pre_order(tree.left)
     if tree.right:
-        path+=preorder(tree.right)
+        path+=pre_order(tree.right)
+
     return path
+
+def post_order(tree) :
+    path=[]
+    if tree.left:
+        path += post_order(tree.left)
+    if tree.right:
+        path += post_order(tree.right)
+
+    path.append(tree.num)
+    return path
+
+def solution(nodeinfo):
+    for i in range(len(nodeinfo)) : #노드번호 추가
+        nodeinfo[i].append(i+1)
+
+    nodeinfo.sort(key=lambda x:(-x[1], x[0])) #level이 높은 순으로 정렬
+
+    tree=Node(nodeinfo[0])
+    for info in nodeinfo[1:] :
+        set_node(tree, info)
+
+    return [pre_order(tree), post_order(tree)]
