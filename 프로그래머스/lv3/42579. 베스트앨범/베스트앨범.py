@@ -1,22 +1,18 @@
 from collections import defaultdict
 
 def solution(genres, plays):
-    answer=[]
-    genres_count=defaultdict(int)
-    genres_idx=defaultdict(list)
-    for i in range(len(genres)) :
-        genres_count[genres[i]]+=plays[i]
-        genres_idx[genres[i]].append([plays[i], i])
-    genres_count=sorted(genres_count, key=lambda x:-genres_count[x])
-    for genre in genres_count :
-        genre_list=genres_idx[genre]
-        genre_list.sort(key=lambda x:(-x[0], x[1]))
-        print(genre_list)
-        count=0
-        for play, idx in genre_list :
-            count+=1
-            if count>2 :
-                break
+    answer = []
+    genre_plays=defaultdict(int) #장르별 재생횟수
+    genre=defaultdict(list) #장르별 [재생횟수, 고유번호]
+    
+    for idx in range(len(genres)) :
+        genre[genres[idx]].append([plays[idx], idx])
+        genre_plays[genres[idx]]+=plays[idx]
+        
+    genre_plays=sorted(genre_plays.items(), key=lambda x:-x[1]) #재생횟수 많은순
+    
+    for key, value in genre_plays :
+        genre[key].sort(key=lambda x:-x[0]) #재생횟수 내림차순 정렬
+        for play, idx in genre[key][:2] :
             answer.append(idx)
-
     return answer
