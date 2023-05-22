@@ -1,15 +1,12 @@
 def solution(order):
+    answer = 0
     stack=[]
     i=1
-    now=0
-
+    
     while i!=len(order)+1 :
         stack.append(i)
-        while stack[-1]==order[now] :
-            now+=1
+        while stack and stack[-1] == order[answer] :
             stack.pop()
-            if len(stack)==0 :
-                break
+            answer+=1
         i+=1
-
-    return now
+    return answer
