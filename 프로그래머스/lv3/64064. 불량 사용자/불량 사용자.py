@@ -19,7 +19,10 @@ def solution(user_id, banned_id):
 
     for users in user_permutations:
         if check(users, banned_id) :
-            users = set(users)
-            if users not in answer:
-                answer.append(users)
+            '''users=tuple(set(users))
+            answer.add(users)'''
+            if set(users) not in answer :
+                answer.append(set(users))
+            
+    #print(answer)
     return len(answer)
