@@ -1,28 +1,20 @@
 from itertools import permutations
 
-
-def check(users, banned_id):
-    for i in range(len(users)) :
-        if len(users[i])!=len(banned_id[i]) :
+def check(users, banned_id) :
+    for i in range(len(banned_id)) :
+        if len(users[i])!=len(banned_id[i]):
             return False
-
-        for j in range(len(users[i])) :
-            if banned_id[i][j]!='*' and banned_id[i][j]!=users[i][j] :
+        for idx in range(len(users[i])) :
+            if banned_id[i][idx]!='*' and banned_id[i][idx]!=users[i][idx]:
                 return False
     return True
-
 
 def solution(user_id, banned_id):
     answer = []
 
-    user_permutations = list(permutations(user_id, len(banned_id)))
-
-    for users in user_permutations:
+    for users in list(permutations(user_id, len(banned_id))) :
         if check(users, banned_id) :
-            '''users=tuple(set(users))
-            answer.add(users)'''
-            if set(users) not in answer :
+            if set(users) not in answer:
                 answer.append(set(users))
-            
-    #print(answer)
+    print(answer)
     return len(answer)
