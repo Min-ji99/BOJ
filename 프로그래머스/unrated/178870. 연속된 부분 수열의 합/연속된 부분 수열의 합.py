@@ -1,23 +1,27 @@
 def solution(sequence, k):
     n=len(sequence)
-    answer = [0, n-1]
+    answer=[0, n-1]
     
-    start, end=0, 0
-    total=sequence[0]
+    if sequence[0]==k:
+        return [0, 0]
     
-    while start<n and end<n :
-        if total==k :
-            if answer[1]-answer[0]>end-start :
+    start, end=0, 1
+    cur=sequence[start]+sequence[end]
+    min_length=n
+    while start<=end and start<n and end<n :
+        if cur==k :
+            if end-start<min_length:
                 answer=[start, end]
-            total-=sequence[start]
+                min_length=end-start
+            cur-=sequence[start]
             start+=1
-        elif total>k :
-            total-=sequence[start]
-            start+=1
-        else :
+        elif cur<k:
             end+=1
             if end==n :
                 break
-            total+=sequence[end]
+            cur+=sequence[end]
+        else :
+            cur-=sequence[start]
+            start+=1
 
     return answer
