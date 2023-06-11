@@ -1,9 +1,9 @@
 def solution(elements):
     answer = set()
-    length=len(elements)
-    elements=elements*2
+    cycle=elements+elements
     
-    for i in range(length) :
-        for j in range(length) :
-            answer.add(sum(elements[j:j+i+1]))
+    for i in range(len(elements)) :
+        for j in range(len(elements)) :
+            answer.add(sum(cycle[i:i+j]))
+            
     return len(answer)
