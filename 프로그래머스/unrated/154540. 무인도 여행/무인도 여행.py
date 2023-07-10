@@ -1,40 +1,44 @@
 from collections import deque
 
 def solution(maps):
-    answer = []
-    days=[]
+    answer=[]
     n=len(maps)
     m=len(maps[0])
-    visit=[[0]*m for _ in range(n)]
+    boards=[]
+    visit=[[False]*m for _ in range(n)]
+    dx, dy=[-1, 1, 0, 0], [0, 0, -1, 1]
     
-    dx=[-1, 1, 0, 0]
-    dy=[0, 0, -1, 1]
-    
-    def bfs(a, b) :
-        visit[a][b]=1
-        if maps[a][b]=='X' :
-            return -1
+    for i in range(n) :
+        tmp=[]
+        for j in range(m) :
+            if maps[i][j]=='X':
+                tmp.append(0)
+            else:
+                tmp.append(int(maps[i][j]))
+        boards.append(tmp)
+                
+    def bfs(i, j):
         q=deque()
-        q.append([a, b])
-        cnt=int(maps[a][b])
+        q.append([i, j])
+        cnt=boards[i][j]
+        visit[i][j]=True
         
-        while q :
+        while q:
             x, y=q.popleft()
-            for i in range(4) :
-                nx=x+dx[i]
-                ny=y+dy[i]
-                if 0<=nx<n and 0<=ny<m :
-                    if maps[nx][ny]!='X' and visit[nx][ny]==0 :
-                        visit[nx][ny]=1
+            
+            for i in range(4):
+                nx, ny=x+dx[i], y+dy[i]
+                if 0<=nx<n and 0<=ny<m and visit[nx][ny]==False:
+                    if boards[nx][ny]>0:
+                        cnt+=boards[nx][ny]
                         q.append([nx, ny])
-                        cnt+=int(maps[nx][ny])
+                        visit[nx][ny]=True
         return cnt
     for i in range(n) :
         for j in range(m) :
-            if visit[i][j]==0 :
-                cnt=bfs(i, j)
-                if cnt>0 :
-                    answer.append(cnt)
+            if boards[i][j]>0 and not visit[i][j] :
+                answer.append(bfs(i, j))
+                
     if len(answer)==0 :
         return [-1]
     return sorted(answer)
